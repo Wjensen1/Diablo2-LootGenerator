@@ -1,0 +1,1 @@
+name	minac	maxacQuilted_Armor	8	11Leather_Armor	14	17Buckler	4	6Embossed_Plate	282	303Sun_Spirit	98	147Fury_Visor	105	150Sacred_Rondache	85	109Mage_Plate	225	261Diadem	50	60

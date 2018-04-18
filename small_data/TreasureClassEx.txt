@@ -1,0 +1,1 @@
+TreasureClass	Item1	Item2	Item3tc:armo3	Quilted_Armor	Buckler	Leather_Armortc:armo60a	Embossed_Plate	Sun_Spirit	Fury_Visortc:armo60b	Sacred_Rondache	Mage_Plate	Diademtc:Act_5_(H)_Equip_A	tc:armo60a	tc:armo60a	tc:armo3tc:Act_5_(H)_Equip_B	tc:armo60b	tc:armo60b	tc:Act_5_(H)_Equip_Atc:Cow_(H)	tc:Act_5_(H)_Equip_B	tc:armo3	tc:armo3
