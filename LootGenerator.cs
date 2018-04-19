@@ -181,16 +181,15 @@ namespace CommandLine
 			//extract monster's tc from monster.txt
 			string monsterTC = PickMonster();
 			//generate base item found in treasureClassEx.txt iwth inputed monster's tc
-			string tc = GetRandomItem(monsterTC);
-			string itemName = GetRandomItem(tc);
+			//string itemName = GetRandomItem(monsterTC);
+			Item item = GetRandomItem(monsterTC);
 			//generate base stats found in armor.txt for base item
-			string itemStats = GenerateItemStats(itemName);
+			item = GenerateItemStats(item);
 			//randomly choose affix from MagicPrefix.txt/{MagicSuffix.txt
 
 			//generate the stats for the chosen affix from MagicPrefix.txt/MagicSuffix.txt
 
-			Console.WriteLine(itemName);
-			Console.WriteLine(itemStats);
+			Console.WriteLine(item.data);
 			Console.WriteLine();
 		}
 
@@ -210,19 +209,24 @@ namespace CommandLine
 			return monsterTC;
 		}
 
-		string GetRandomItem(string tc)
+		//returns tuple with itemTreasureClass and item
+		Item GetRandomItem(string monsterTreasureClass)
 		{
+			string itemTreasureClass = "";
+			string item = monsterTreasureClass;
 			//loop until it returns an item instead of a treasureClass
-			while (tc.Substring(0,3) == "tc:")
+			while (item.Substring(0, 3) == "tc:")
 			{
-				int yIndex = GetYIndex(tc, treasureClasses, treasureClassDict[treasureClassKey]);
+				itemTreasureClass = item;
+				int yIndex = GetYIndex(item, treasureClasses, treasureClassDict[treasureClassKey]);
 				int xIndex = r.Next(1, treasureClasses.GetLength(0));
-				tc = treasureClasses[xIndex, yIndex];
+				item = treasureClasses[xIndex, yIndex];
 			}
-			return tc;
+			Item output = new Item(item, itemTreasureClass);
+			return output;
 		}
 
-		int GetYIndex(string inputName, string[,] data, int xIndex = 0)
+		public static int GetYIndex(string inputName, string[,] data, int xIndex = 0)
 		{
 			int output = -1;
 
@@ -234,7 +238,6 @@ namespace CommandLine
 					break;
 				}
 			}
-
 			if (output == -1)
 			{
 				Console.WriteLine("Didn't find the treasureClass: " + inputName);
@@ -242,7 +245,22 @@ namespace CommandLine
 			return output;
 		}
 
-		string GenerateItemStats(string itemName)
+		Item GenerateItemStats(Item inputItem)
+		{
+			Item output = null;
+			switch (inputItem.treasureClass.Substring(0, 7))
+			{ 
+				case "tc:armo":
+					output = new Armor(inputItem.name, inputItem.treasureClass);
+					break;
+				case "tc:weap":
+					output = new Weapon(inputItem.name, inputItem.treasureClass);
+					break;
+			}
+			return output;
+		}
+
+		string GenerateArmorStats(string itemName)
 		{
 			int itemIndex = GetYIndex(itemName, armors, armorDict[nameKey]);
 			int minAC = Convert.ToInt32(armors[armorDict[minACKey], itemIndex]);
@@ -250,6 +268,80 @@ namespace CommandLine
 			int ac = r.Next(minAC, maxAC);
 			string output = "Defense: " + ac;
 			return output;
+		}
+	}
+
+	public class Item
+	{
+		public string prefix = "";
+		public string suffix = "";
+		public string name { get; private set; }
+		public string treasureClass { get; private set; }
+		public string data;
+
+		//constructor
+		public Item(string inputName, string inputTreasureClass)
+		{
+			name = inputName;
+			treasureClass = inputTreasureClass;
+		}
+		
+		void GenerateAffix()
+		{
+
+		}
+
+		void SetData()
+		{
+
+		}
+	}
+
+	public class Weapon : Item
+	{
+
+		public Weapon(string inputName, string inputTreasureClass):base(inputName, inputTreasureClass)
+		{
+			//Generate base stats by name
+			GenerateStats();
+			SetData();
+		}
+
+		void GenerateStats()
+		{
+
+		}
+
+		void SetData()
+		{
+
+		}
+	}
+
+	public class Armor : Item
+	{
+		public int ac { get; private set; }
+		public int durability { get; private set; }
+
+		public Armor(string inputName, string inputTreasureClass): base(inputName,inputTreasureClass)
+		{
+			//Generate base stats by name
+			GenerateStats();
+			SetData();
+		}
+
+		void GenerateStats()
+		{
+			int itemIndex = LootGenerator.GetYIndex(name, LootGenerator.instance.armors, LootGenerator.instance.armorDict[LootGenerator.nameKey]);
+			int minAC = Convert.ToInt32(LootGenerator.instance.armors[LootGenerator.instance.armorDict[LootGenerator.minACKey], itemIndex]);
+			int maxAC = Convert.ToInt32(LootGenerator.instance.armors[LootGenerator.instance.armorDict[LootGenerator.maxACKey], itemIndex]);
+			Random r = new Random();
+			ac = r.Next(minAC, maxAC);
+		}
+
+		void SetData()
+		{
+			data = prefix + name+ suffix + '\n' + "Defense: " + ac;
 		}
 	}
 }

@@ -1,0 +1,1 @@
+5			Name	mod1code	mod1min	mod1maxof_Precision	Dexterity	11	15of_Regrowth	Regeneration	5	5of_the_Tiger	Health	21	30of_the_Titan	Strength	16	20of_the_Leech	Lifesteal	4	5

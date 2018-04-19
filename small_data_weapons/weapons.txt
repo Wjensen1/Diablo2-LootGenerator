@@ -1,0 +1,1 @@
+name	mindam	maxdam	wclassWrist_Sword	19	44	ht1Ogre_Axe	28	145	stfBlade_Bow	21	43	bow
