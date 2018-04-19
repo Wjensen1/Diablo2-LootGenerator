@@ -32,11 +32,11 @@ namespace CommandLine
 		public string[,] monsterStats;
 		public string[,] treasureClasses;
 
-		public Dictionary<string, int> armorDict;
-		public Dictionary<string, int> magicPrefixDict;
-		public Dictionary<string, int> magicSuffixDict;
-		public Dictionary<string, int> monsterStatsDict;
-		public Dictionary<string, int> treasureClassDict;
+		public Dictionary<string, int> armorDict = new Dictionary<string, int>();
+		public Dictionary<string, int> magicPrefixDict = new Dictionary<string, int>();
+		public Dictionary<string, int> magicSuffixDict = new Dictionary<string, int>();
+		public Dictionary<string, int> monsterStatsDict = new Dictionary<string, int>();
+		public Dictionary<string, int> treasureClassDict = new Dictionary<string, int>();
 
 
 		//run on execute
@@ -87,19 +87,24 @@ namespace CommandLine
 			magicSuffixDict = GenerateDictionary(data, 1);
 			//get monster stat data
 			path = smallDataPath + monsterStatsPath;
+			data = System.IO.File.ReadAllText(path);
 			monsterStats = ConvertToStringArray(data, 2);
 			monsterStatsDict = GenerateDictionary(data, 1);
 			//get treasure class data
-			data = System.IO.File.ReadAllText(path);
 			path = smallDataPath + treasureClassPath;
+			data = System.IO.File.ReadAllText(path);
 			treasureClasses = ConvertToStringArray(data, 1);
 			treasureClassDict = GenerateDictionary(data, 0);
 		}
 
 		//generate an Dictionary from the row at the given y index
 		//dictionary will store the data in the cells as the keys and their indexes as the value
-		Dictionary<string, int> GenerateDictionary(string[,] input, int yIndex = 0, char lineBreak = '\n', char unitBreak = '\t')
+		Dictionary<string, int> GenerateDictionary(string input, int yIndex = 0, char lineBreak = '\r', char unitBreak = '\t')
 		{
+			//remove any extra characters from the string
+			//string extra = "\r";
+			//input = input.Replace(extra, "");
+
 			Dictionary<string, int> output = new Dictionary<string, int>();
 
 			string[] rows = input.Split(lineBreak);
@@ -109,13 +114,16 @@ namespace CommandLine
 			{
 				output.Add(dictRow[i], i);
 			}
-
 			return output;
 		}
 
 		//converts the inputed string into an array
-		string[,] ConvertToStringArray(string input, int initialYIndex = 0, char lineBreak = '\n', char unitBreak = '\t')
+		string[,] ConvertToStringArray(string input, int initialYIndex = 0, char lineBreak = '\r', char unitBreak = '\t')
 		{
+			//romve any extra characters from the string
+			//string extra = "\r";
+			//input = input.Replace(extra, "");
+
 			int top = initialYIndex - 1;
 			if (top < 0)
 			{
@@ -123,12 +131,11 @@ namespace CommandLine
 			}
 
 			string[] rows = input.Split(lineBreak);
-			string[] topRow = rows[top];
+			string[] topRow = rows[top].Split(unitBreak);
 			int xLength = topRow.Length;
 			int yLength = rows.Length - initialYIndex;
 			string[,] output = new string[xLength,yLength];
-
-			for(int y = 0; y< yLength; y++)
+			for (int y = 0; y < yLength; y++)
 			{
 				string[] splitRow = rows[y + initialYIndex].Split(unitBreak);
 				for(int x = 0; x < xLength; x++)
@@ -136,7 +143,6 @@ namespace CommandLine
 					output[x, y] = splitRow[x];
 				}
 			}
-
 			return output;
 		}
 
@@ -178,5 +184,13 @@ namespace CommandLine
 
 			Console.WriteLine("Loot Generated");
 		}
+
+		////picks random moster, logs to console, outputs monster's treasureClass
+		//string PickMonster()
+		//{
+		//	//pick random monster
+		//	//print monster
+		//	//output monsters treasure class
+		//}
 	}
 }
