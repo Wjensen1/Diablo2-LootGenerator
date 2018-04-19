@@ -1,0 +1,1 @@
+1			Class	Type	Level	TreasureClassHell_Bovine	Cow	90	tc:Cow_(H)

@@ -1,0 +1,1 @@
+Treasure Class	Item1	Item2	Item3tc:armo3	Quilted_Armor	Buckler	Leather_Armortc:weap60a	Wrist_Sword	Ogre_Axe	Blade_Bowtc:armo60b	Sacred_Rondache	Mage_Plate	Diademtc:Act_5_(H)_Equip_A	tc:weap60a	tc:weap60a	tc:weap60atc:Act_5_(H)_Equip_B	tc:armo60b	tc:armo60b	tc:Act_5_(H)_Equip_Atc:Cow_(H)	tc:Act_5_(H)_Equip_B	tc:armo3	tc:armo3

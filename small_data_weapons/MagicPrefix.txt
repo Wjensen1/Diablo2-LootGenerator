@@ -1,0 +1,1 @@
+5			Name	mod1code	mod1min	mod1maxGlorious	Enhanced_Defense_%	41	50Brutal	Enhanced_Damage_%	41	50Dragon's	Mana	31	40Emerald	Poison_Resist_%	31	40Glowing	Light_Radius	2	2
