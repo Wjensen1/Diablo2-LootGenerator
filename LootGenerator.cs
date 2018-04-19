@@ -38,6 +38,8 @@ namespace CommandLine
 		public Dictionary<string, int> monsterStatsDict = new Dictionary<string, int>();
 		public Dictionary<string, int> treasureClassDict = new Dictionary<string, int>();
 
+		Random r = new Random();
+
 
 		//run on execute
 		public static void Main()
@@ -177,20 +179,77 @@ namespace CommandLine
 		{
 			//pick random monster from monster.txt
 			//extract monster's tc from monster.txt
+			string monsterTC = PickMonster();
 			//generate base item found in treasureClassEx.txt iwth inputed monster's tc
+			string tc = GetRandomItem(monsterTC);
+			string itemName = GetRandomItem(tc);
 			//generate base stats found in armor.txt for base item
+			string itemStats = GenerateItemStats(itemName);
 			//randomly choose affix from MagicPrefix.txt/{MagicSuffix.txt
+
 			//generate the stats for the chosen affix from MagicPrefix.txt/MagicSuffix.txt
 
-			Console.WriteLine("Loot Generated");
+			Console.WriteLine(itemName);
+			Console.WriteLine(itemStats);
+			Console.WriteLine();
 		}
 
-		////picks random moster, logs to console, outputs monster's treasureClass
-		//string PickMonster()
-		//{
-		//	//pick random monster
-		//	//print monster
-		//	//output monsters treasure class
-		//}
+		//picks random moster, logs to console, outputs monster's treasureClass
+		string PickMonster()
+		{
+			//pick random monster
+			int index = r.Next(0,monsterStats.GetLength(1)-1);
+			//print monster
+			string name = monsterStats[monsterStatsDict[nameKey], index];
+			Console.WriteLine();
+			Console.WriteLine(name + " dropped:");
+			Console.WriteLine("=====");
+
+			//output monsters treasure class
+			string monsterTC = monsterStats[monsterStatsDict[treasureClassKey], index];
+			return monsterTC;
+		}
+
+		string GetRandomItem(string tc)
+		{
+			//loop until it returns an item instead of a treasureClass
+			while (tc.Substring(0,3) == "tc:")
+			{
+				int yIndex = GetYIndex(tc, treasureClasses, treasureClassDict[treasureClassKey]);
+				int xIndex = r.Next(1, treasureClasses.GetLength(0));
+				tc = treasureClasses[xIndex, yIndex];
+			}
+			return tc;
+		}
+
+		int GetYIndex(string inputName, string[,] data, int xIndex = 0)
+		{
+			int output = -1;
+
+			for (int y = 0; y < data.GetLength(1); y++)
+			{
+				if (inputName == data[xIndex, y])
+				{
+					output = y;
+					break;
+				}
+			}
+
+			if (output == -1)
+			{
+				Console.WriteLine("Didn't find the treasureClass: " + inputName);
+			}
+			return output;
+		}
+
+		string GenerateItemStats(string itemName)
+		{
+			int itemIndex = GetYIndex(itemName, armors, armorDict[nameKey]);
+			int minAC = Convert.ToInt32(armors[armorDict[minACKey], itemIndex]);
+			int maxAC = Convert.ToInt32(armors[armorDict[maxACKey], itemIndex]);
+			int ac = r.Next(minAC, maxAC);
+			string output = "Defense: " + ac;
+			return output;
+		}
 	}
 }
